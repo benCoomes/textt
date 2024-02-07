@@ -18,7 +18,7 @@ function transformText(input, password) {
 
    for (let index = 0; index < input.length; index++) {
     let char = input.charCodeAt(index)
-    let shift = password.charCodeAt(index%password.length) - 97 + 1
+    let shift = getShift(password, index)
 
     let decChar = ''
     if (char >=48 && char <= 57) {
@@ -66,4 +66,14 @@ function decryptUppercase(char, shift) {
     
 function decrypt(char, shift, len, start) {
     return ((char + (len-(shift%len)) - start) % len) + start
+}
+
+function getShift(password, index) {
+  let code = password.charCodeAt(index%password.length)
+  if (code >= 97 && code <= 122) {
+    // legacy, for backwards compatibility
+    return password.charCodeAt(index%password.length) - 97 + 1
+  } else {
+    return password.charCodeAt(index%password.length)
+  }
 }
